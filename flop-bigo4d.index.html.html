@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="shortcut icon"
+      href="https://bigo4d.sayurkol.net/favicon.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      href="https://bigo4d.sayurkol.net/favicon.png"
+    />
+    <title>Generator WD Auto Flop - BIGO4D</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Manrope:wght@700;800&family=Poppins:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* ==================== TEMA MATTE BLUE VARIABLE ==================== */
+      :root {
+        --rv-bg: #101620;           /* Latar belakang Biru Dof Sangat Gelap */
+        --rv-panel: #1a2230;        /* Panel Biru Dof */
+        --rv-wine: #607d8b;          /* Biru Keabuan (Muted Blue) */
+        --rv-ruby: #4f6c7c;          /* Biru Dof Sedang */
+        --rv-blue: #2196f3;          /* Biru Terang untuk Aksen */
+        --rv-hot: #64b5f6;           /* Biru Muda untuk Kilau */
+        --rv-aqua: #bbdefb;          /* Biru Sangat Muda */
+        --rv-text: #eceff1;          /* Teks Putih Keabuan Terang */
+        --rv-muted: #b0bec5;         /* Teks Muted */
+        --rv-line: rgba(100, 181, 246, 0.25); /* Garis Biru Transparan */
+      }
+
+      *,
+      body,
+      html,
+      button,
+      a,
+      input,
+      textarea,
+      th,
+      td {
+        box-sizing: border-box;
+        cursor:
+          url("https://cur.cursors-4u.net/user/use-1/use153.png") 0 0,
+          auto !important;
+      }
+
+      body {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        min-height: 100vh;
+        margin: 0;
+        padding: 20px;
+        overflow-x: hidden;
+        color: var(--rv-text);
+        background: #101620 url("https://i.ibb.co/bg2RFX2M/Background-TEST.png") no-repeat center center fixed;
+        background-size: cover;
+        font-family:
+          Inter,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Arial,
+          sans-serif;
+      }
+
+      /* Transparan overlay agar gambar latar belakang terlihat jelas */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background: radial-gradient(
+          circle at 50% 50%,
+          rgba(16, 22, 32, 0.2),
+          rgba(16, 22, 32, 0.65)
+        );
+      }
+
+      #fallingCanvas, #cursorCanvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+      #fallingCanvas { z-index: 2; }
+      #cursorCanvas { z-index: 99999; }
+
+      /* ==================== CONTAINER VAULT SHELL ==================== */
+      .container {
+        max-width: 850px;
+        width: 95%;
+        margin: 30px auto;
+        position: relative;
+        z-index: 3;
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+        isolation: isolate;
+        overflow: hidden;
+        background: linear-gradient(
+          155deg,
+          rgba(26, 34, 48, 0.85),
+          rgba(16, 22, 32, 0.90) 48%,
+          rgba(20, 28, 40, 0.88)
+        );
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        padding: 24px;
+        border-radius: 26px;
+        border: 1px solid var(--rv-line);
+        box-shadow:
+          0 24px 60px rgba(0, 0, 0, 0.72),
+          0 0 38px rgba(33, 150, 243, 0.15),
+          inset 0 1px 0 rgba(255, 255, 255, 0.08),
+          inset 0 -15px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 8%;
+        right: 8%;
+        z-index: 4;
+        height: 2px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--rv-hot),
+          #e3f2fd,
+          var(--rv-hot),
+          transparent
+        );
+        filter: drop-shadow(0 0 7px var(--rv-blue));
+        animation: rvTopPulse 3s ease-in-out infinite;
+      }
+
+      .container::after {
+        content: "";
+        position: absolute;
+        top: -60%;
+        left: -55%;
+        z-index: 3;
+        width: 32%;
+        height: 220%;
+        pointer-events: none;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.02),
+          rgba(255, 255, 255, 0.12),
+          rgba(255, 255, 255, 0.02),
+          transparent
+        );
+        transform: rotate(22deg);
+        animation: rvVaultSweep 7s ease-in-out infinite;
+      }
+
+      @keyframes rvTopPulse {
+        0%, 100% {
+          opacity: 0.3;
+          transform: scaleX(0.7);
+        }
+        50% {
+          opacity: 0.8;
+          transform: scaleX(1);
+        }
+      }
+
+      @keyframes rvVaultSweep {
+        0%, 28% {
+          left: -55%;
+          opacity: 0;
+        }
+        42% {
+          opacity: 0.5;
+        }
+        65%, 100% {
+          left: 130%;
+          opacity: 0;
+        }
+      }
+
+      /* ==================== PANEL KACA MATTE BLUE ==================== */
+      .glass-panel {
+        background: rgba(26, 34, 48, 0.65);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(100, 181, 246, 0.2);
+        border-radius: 20px;
+        padding: 30px 25px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        box-sizing: border-box;
+        box-shadow:
+          0 10px 30px rgba(0, 0, 0, 0.5),
+          inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      }
+
+      .logo-container {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+      }
+
+      .logo-container img {
+        max-width: 200px;
+        filter: drop-shadow(0 0 14px rgba(33, 150, 243, 0.4));
+      }
+
+      h1, h2 {
+        font-family: 'Manrope', 'Poppins', sans-serif;
+        font-weight: 800;
+        color: #ffffff;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-top: 0;
+        margin-bottom: 20px;
+        text-align: center;
+        text-shadow: 0 0 10px rgba(100, 181, 246, 0.4);
+      }
+
+      h1 { font-size: 20px; }
+      h2 { font-size: 18px; }
+
+      .info-highlight {
+        background: linear-gradient(
+          145deg,
+          rgba(33, 150, 243, 0.1),
+          rgba(16, 22, 32, 0.4)
+        );
+        border: 1px solid rgba(33, 150, 243, 0.25);
+        backdrop-filter: blur(8px);
+        color: var(--rv-text);
+        padding: 12px 20px;
+        border-radius: 12px;
+        margin-bottom: 25px;
+        font-size: 12px;
+        font-weight: 700;
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      }
+      .info-highlight strong {
+        color: var(--rv-aqua);
+      }
+
+      label {
+        font-family: 'Manrope', sans-serif;
+        font-weight: 800;
+        display: block;
+        margin-bottom: 10px;
+        color: #ffffff;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        font-size: 12px;
+        width: 100%;
+        text-align: center;
+      }
+
+      textarea {
+        width: 100%;
+        height: 180px;
+        padding: 15px;
+        border: 1px solid rgba(100, 181, 246, 0.2);
+        border-radius: 12px;
+        font-family: "Poppins", monospace;
+        font-size: 13px;
+        resize: vertical;
+        box-sizing: border-box;
+        background: rgba(10, 14, 20, 0.7);
+        backdrop-filter: blur(10px);
+        color: #ffffff;
+        transition: all 0.3s ease;
+      }
+
+      textarea:focus {
+        outline: none;
+        border-color: var(--rv-blue);
+        box-shadow: 0 0 15px rgba(33, 150, 243, 0.3);
+        background: rgba(5, 7, 10, 0.85);
+      }
+
+      /* ==================== STYLES TOMBOL MATTE BLUE ==================== */
+      .btn-group {
+        margin-top: 25px;
+        display: flex;
+        flex-direction: row;
+        gap: 15px;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .btn-142 {
+        min-width: 180px;
+        height: 48px;
+        border: 1px solid #4fc3f7;
+        border-radius: 13px;
+        color: #ffffff;
+        position: relative;
+        font-family: 'Manrope', sans-serif;
+        font-weight: 800;
+        font-size: 13px;
+        letter-spacing: 0.45px;
+        text-transform: uppercase;
+        background: linear-gradient(
+          145deg,
+          #1e88e5 0%,
+          #1565c0 52%,
+          #0d47a1 100%
+        );
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.15),
+          inset 0 -8px 15px rgba(0, 0, 0, 0.2),
+          0 9px 19px rgba(0, 0, 0, 0.4),
+          0 0 15px rgba(33, 150, 243, 0.2);
+        cursor: pointer;
+        transition: filter 0.2s ease, transform 0.2s ease;
+        overflow: hidden;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 20px;
+      }
+
+      .btn-142::before {
+        content: "";
+        position: absolute;
+        top: 1px;
+        left: 4%;
+        width: 92%;
+        height: 35%;
+        pointer-events: none;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.1),
+          rgba(255, 255, 255, 0.02),
+          transparent
+        );
+        border-radius: 10px 10px 40% 40%;
+      }
+
+      .btn-142::after {
+        content: "";
+        position: absolute;
+        top: -90%;
+        left: -55%;
+        width: 30%;
+        height: 280%;
+        pointer-events: none;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.05),
+          rgba(255, 255, 255, 0.25),
+          rgba(255, 255, 255, 0.05),
+          transparent
+        );
+        transform: rotate(22deg);
+        animation: rvButtonShine 4.8s ease-in-out infinite;
+      }
+
+      @keyframes rvButtonShine {
+        0%, 35% {
+          left: -55%;
+          opacity: 0;
+        }
+        48% {
+          opacity: 0.6;
+        }
+        68%, 100% {
+          left: 130%;
+          opacity: 0;
+        }
+      }
+
+      .btn-142:hover {
+        filter: brightness(1.1);
+        transform: translateY(-2px);
+      }
+
+      .btn-142:active {
+        transform: scale(0.98);
+      }
+
+      .btn-142.btn-danger {
+        background: linear-gradient(
+          145deg,
+          #546e7a 0%,
+          #37474f 52%,
+          #263238 100%
+        );
+        border-color: #90a4ae;
+      }
+      .btn-142.btn-danger:hover {
+        background: linear-gradient(
+          145deg,
+          #607d8b 0%,
+          #455a64 100%
+        );
+      }
+
+      /* ==================== TABEL HASIL MATTE BLUE ==================== */
+      .table-container {
+        overflow-x: auto;
+        width: 100%;
+        border: 1px solid rgba(100, 181, 246, 0.25);
+        border-radius: 12px;
+        background: rgba(10, 14, 20, 0.7);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 0 15px rgba(33, 150, 243, 0.1);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+        color: #ffffff;
+      }
+
+      th {
+        font-family: 'Manrope', sans-serif;
+        font-weight: 800;
+        padding: 14px 10px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        color: var(--rv-aqua);
+        text-align: center;
+        font-size: 11px;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        background: linear-gradient(
+          145deg,
+          #1565c0 0%,
+          #0d47a1 100%
+        );
+      }
+
+      td {
+        padding: 14px 10px;
+        border: 1px solid rgba(255, 255, 255, 0.03);
+        white-space: nowrap;
+        text-align: center;
+        color: #ffffff;
+      }
+
+      tbody tr:nth-child(even) {
+        background-color: rgba(255, 255, 255, 0.01);
+      }
+
+      .fw-bold-data {
+        font-weight: 600;
+      }
+
+      .nominal-color {
+        color: #81d4fa !important;
+      }
+
+      footer {
+        margin-top: 20px;
+        width: 100%;
+        text-align: center;
+        color: var(--rv-muted);
+        font-size: 12px;
+        letter-spacing: 0.25px;
+        text-transform: uppercase;
+      }
+
+      /* TOAST NOTIFIKASI GLASS */
+      .elegant-toast {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background: rgba(26, 34, 48, 0.95);
+        backdrop-filter: blur(12px);
+        color: #ffffff;
+        padding: 14px 24px;
+        border-radius: 12px;
+        font-size: 13px;
+        font-weight: 600;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), 0 0 20px rgba(33, 150, 243, 0.2);
+        z-index: 9999;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.3s ease;
+        pointer-events: none;
+        border: 1px solid var(--rv-blue);
+      }
+
+      .elegant-toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="fallingCanvas"></canvas>
+    <canvas id="cursorCanvas"></canvas>
+
+    <div id="popupNotification" class="elegant-toast"></div>
+
+    <div class="container">
+      <div class="glass-panel input-panel">
+        <div class="logo-container">
+          <a href="https://bigo4d.com" target="_blank">
+            <img
+              src="https://cdn.bunkerkiamat.com/bigo4d/images/logo/Bigo4d.gif"
+              alt="Logo BIGO4D"
+            />
+          </a>
+        </div>
+        <h1>BIGO4D - GENERATOR WITHDRAW FLOP</h1>
+
+        <div class="info-highlight">
+          ◆ <strong>BIGO4D:</strong> GENERATOR WD FLOP ◆
+        </div>
+
+        <label for="rawInput">MASUKKAN DATA ADMIN DI SINI:</label>
+        <textarea
+          id="rawInput"
+          placeholder="Tempelkan data transaksi di sini..."
+        ></textarea>
+
+        <div class="btn-group">
+          <button class="btn-142" onclick="processData()">
+            🔄 PROSES DATA
+          </button>
+          <button class="btn-142" onclick="copyToClipboard()">
+            ✅ SALIN HASIL
+          </button>
+          <button class="btn-142 btn-danger" onclick="resetData()">
+            ⛔ BERSIHKAN
+          </button>
+        </div>
+      </div>
+
+      <div class="glass-panel results-panel">
+        <h2>HASIL GENERATOR</h2>
+
+        <label>HASIL UNTUK PASTE DI DOC:</label>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 25%">USER ID</th>
+                <th style="width: 45%">NAMA REKENING</th>
+                <th style="width: 15%">CREDIT</th>
+                <th style="width: 15%">DEBIT</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+
+        <footer>&copy; 2026 Staff BIGO4D</footer>
+      </div>
+    </div>
+
+    <script>
+      // ==================== LOGIKAL EFEK KURSOR (GLOW TRAIL) ====================
+      const cCanvas = document.getElementById("cursorCanvas");
+      const cCtx = cCanvas.getContext("2d");
+
+      let cWidth = (cCanvas.width = window.innerWidth);
+      let cHeight = (cCanvas.height = window.innerHeight);
+
+      window.addEventListener("resize", () => {
+        cWidth = cCanvas.width = window.innerWidth;
+        cHeight = cCanvas.height = window.innerHeight;
+      });
+
+      const trailParticles = [];
+      const mouse = { x: -100, y: -100 };
+
+      window.addEventListener("mousemove", (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+        for (let i = 0; i < 2; i++) {
+          trailParticles.push(new TrailParticle(mouse.x, mouse.y));
+        }
+      });
+
+      class TrailParticle {
+        constructor(x, y) {
+          this.x = x;
+          this.y = y;
+          this.size = Math.random() * 4 + 2;
+          this.speedX = (Math.random() - 0.5) * 1.5;
+          this.speedY = (Math.random() - 0.5) * 1.5;
+          this.life = 1;
+          this.decay = Math.random() * 0.03 + 0.015;
+          this.color = Math.random() > 0.5 ? "33, 150, 243" : "187, 222, 251";
+        }
+        update() {
+          this.x += this.speedX;
+          this.y += this.speedY;
+          this.life -= this.decay;
+        }
+        draw() {
+          cCtx.save();
+          cCtx.beginPath();
+          cCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          cCtx.fillStyle = `rgba(${this.color}, ${this.life})`;
+          cCtx.shadowBlur = 10;
+          cCtx.shadowColor = `rgba(${this.color}, 0.8)`;
+          cCtx.fill();
+          cCtx.restore();
+        }
+      }
+
+      function animateCursorTrail() {
+        cCtx.clearRect(0, 0, cWidth, cHeight);
+        for (let i = 0; i < trailParticles.length; i++) {
+          trailParticles[i].update();
+          trailParticles[i].draw();
+          if (trailParticles[i].life <= 0) {
+            trailParticles.splice(i, 1);
+            i--;
+          }
+        }
+        requestAnimationFrame(animateCursorTrail);
+      }
+      animateCursorTrail();
+
+      // ==================== LOGIKAL ANIMASI KOIN JATUH (Canvas) ====================
+      const canvas = document.getElementById("fallingCanvas");
+      const ctx = canvas.getContext("2d");
+
+      let width = (canvas.width = window.innerWidth);
+      let height = (canvas.height = window.innerHeight);
+
+      window.addEventListener("resize", () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      });
+
+      class Coin {
+        constructor() {
+          this.reset();
+        }
+        reset() {
+          this.x = Math.random() * width;
+          this.y = Math.random() * -height - 20;
+          this.size = Math.random() * 5 + 4;
+          this.speed = Math.random() * 2 + 1.5;
+          this.opacity = Math.random() * 0.5 + 0.3;
+          this.rotationSpeed = Math.random() * 0.02 + 0.01;
+          this.rotation = Math.random() * Math.PI;
+        }
+        update() {
+          this.y += this.speed;
+          this.rotation += this.rotationSpeed;
+          if (this.y > height) {
+            this.reset();
+          }
+        }
+        draw() {
+          ctx.save();
+          ctx.translate(this.x, this.y);
+          ctx.rotate(this.rotation);
+          ctx.beginPath();
+          ctx.ellipse(0, 0, this.size, this.size * 0.6, 0, 0, 2 * Math.PI);
+          ctx.fillStyle = `rgba(187, 222, 251, ${this.opacity})`;
+          ctx.fill();
+          ctx.strokeStyle = `rgba(255, 255, 255, ${this.opacity * 0.5})`;
+          ctx.stroke();
+          ctx.restore();
+        }
+      }
+
+      const coins = Array.from({ length: 45 }, () => new Coin());
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        coins.forEach((coin) => {
+          coin.update();
+          coin.draw();
+        });
+        requestAnimationFrame(animate);
+      }
+      animate();
+
+      // ==================== LOGIKA CORE DATA FUNGSI ASLI ====================
+      let records = [];
+
+      function showPopup(message) {
+        const popup = document.getElementById("popupNotification");
+        popup.innerText = message;
+        popup.classList.add("show");
+
+        setTimeout(() => {
+          popup.classList.remove("show");
+        }, 2500);
+      }
+
+      function processData() {
+        const input = document.getElementById("rawInput").value;
+        const tbody = document.getElementById("tableBody");
+        tbody.innerHTML = "";
+        records = [];
+
+        if (!input.trim()) {
+          showPopup("Input data kosong.");
+          return;
+        }
+
+        const lines = input
+          .split("\n")
+          .map((line) => line.trim())
+          .filter((line) => line.length > 0);
+        let tempRecords = [];
+        let currentBlock = null;
+
+        for (let i = 0; i < lines.length; i++) {
+          let line = lines[i];
+          let lowerLine = line.toLowerCase();
+
+          if (/^g[1-5]$/i.test(line)) {
+            continue;
+          }
+
+          if (
+            lowerLine.includes("withdraw") &&
+            lowerLine.includes("accept")
+          ) {
+            let userMatch = line.match(
+              /\d{2}:\d{2}:\d{2}\s*([a-zA-Z0-9_.-]+)\s*Withdraw/i,
+            );
+            let namaMatch = line.match(/Withdraw\s*([^,]+)/i);
+            let nominalMatch = line.match(/([\d,]+)\s*ACCEPT/i);
+
+            if (userMatch && namaMatch && nominalMatch) {
+              if (currentBlock) {
+                tempRecords.push(currentBlock);
+                currentBlock = null;
+              }
+              tempRecords.push({
+                userId: userMatch[1].trim(),
+                namaRekening: namaMatch[1].trim().toUpperCase(),
+                nominal: nominalMatch[1].trim(),
+              });
+              continue;
+            }
+          }
+
+          let resultFormatMatch = line.match(
+            /^([a-zA-Z0-9_.-]+)\s+(.+?)\s+(\d{1,3}(,\d{3})+)$/,
+          );
+          if (
+            resultFormatMatch &&
+            !lowerLine.includes("withdraw") &&
+            !line.includes(",")
+          ) {
+            if (currentBlock) {
+              tempRecords.push(currentBlock);
+              currentBlock = null;
+            }
+            tempRecords.push({
+              userId: resultFormatMatch[1].trim(),
+              namaRekening: resultFormatMatch[2].trim().toUpperCase(),
+              nominal: resultFormatMatch[3].trim(),
+            });
+            continue;
+          }
+
+          if (lowerLine.includes("withdraw")) {
+            let nominal = "-";
+            let matchUang = line.match(/\d{1,3}(,\d{3})+/);
+            if (matchUang) {
+              nominal = matchUang[0];
+            } else {
+              let timeMatch = line.match(/\d{1,2}:\d{2}:\d{2}/);
+              if (timeMatch) {
+                let setelahJam = line.split(timeMatch[0])[1];
+                if (setelahJam) {
+                  let angkaAwal = setelahJam.match(/\d+/);
+                  if (angkaAwal) nominal = angkaAwal[0];
+                }
+              }
+            }
+            if (currentBlock) currentBlock.nominal = nominal;
+          } else if (
+            line.includes(",") ||
+            lowerLine.startsWith("bca") ||
+            lowerLine.startsWith("bri") ||
+            lowerLine.startsWith("seabank") ||
+            lowerLine.startsWith("dana") ||
+            lowerLine.startsWith("ovo")
+          ) {
+            let parts = line.split(",");
+            let namaMentah =
+              parts.length >= 3
+                ? parts[2].trim()
+                : parts.length === 2
+                  ? parts[1].trim()
+                  : line;
+
+            namaMentah = namaMentah.replace(/^[\d\s\-\.]+/g, "").trim();
+            let namaClean = namaMentah;
+            let extractedUserId = "";
+
+            let nempelMatch = namaMentah.match(/(.+?)\s*(\d+)([a-zA-Z].*)$/);
+            if (nempelMatch) {
+              namaClean = nempelMatch[1].trim();
+              extractedUserId = nempelMatch[3].trim();
+            }
+
+            if (currentBlock) {
+              currentBlock.namaRekening = namaClean.toUpperCase();
+              if (extractedUserId) {
+                tempRecords.push(currentBlock);
+                currentBlock = {
+                  userId: extractedUserId,
+                  namaRekening: "",
+                  nominal: "",
+                };
+              }
+            }
+          } else {
+            if (currentBlock) tempRecords.push(currentBlock);
+            let cleanUser = line.replace(/^[0-9]+/, "").trim();
+            currentBlock = {
+              userId: cleanUser,
+              namaRekening: "",
+              nominal: "",
+            };
+          }
+        }
+
+        if (currentBlock) tempRecords.push(currentBlock);
+
+        let validCount = 0;
+        tempRecords.forEach((rec) => {
+          if (rec.userId) {
+            let row = document.createElement("tr");
+            row.innerHTML = `
+                <td class="fw-bold-data">${rec.userId}</td>
+                <td class="fw-bold-data">${rec.namaRekening || "-"}</td>
+                <td></td>
+                <td class="fw-bold-data nominal-color">${rec.nominal || "-"}</td>
+            `;
+            tbody.appendChild(row);
+            validCount++;
+          }
+        });
+
+        if (validCount === 0) {
+          showPopup("Format data tidak dikenali.");
+        } else {
+          showPopup(`Berhasil memproses ${validCount} data.`);
+        }
+      }
+
+      function copyToClipboard() {
+        const tbody = document.getElementById("tableBody");
+        if (tbody.rows.length === 0) {
+          showPopup("Tidak ada data untuk disalin.");
+          return;
+        }
+
+        let textToCopy = "";
+        for (let row of tbody.rows) {
+          let uId = row.cells[0].innerText;
+          let nRek = row.cells[1].innerText;
+          let nom = row.cells[3].innerText;
+          textToCopy += `${uId}\t${nRek}\t\t${nom}\n`;
+        }
+
+        navigator.clipboard
+          .writeText(textToCopy)
+          .then(() => {
+            showPopup("Data berhasil disalin!");
+          })
+          .catch(() => {
+            showPopup("Gagal menyalin otomatis.");
+          });
+      }
+
+      function resetData() {
+        document.getElementById("rawInput").value = "";
+        document.getElementById("tableBody").innerHTML = "";
+        records = [];
+        showPopup("Data berhasil dibersihkan.");
+      }
+    </script>
+  </body>
+</html>
